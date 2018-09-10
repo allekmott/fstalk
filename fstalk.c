@@ -28,6 +28,9 @@ int main(int argc, const char *argv[]) {
 	struct fstalk_event *event;
 	const char *filename;
 
+	struct tm *t_info;
+	char s_time[64];
+
 	int ret;
 
 	if (argc < 2) {
@@ -52,12 +55,16 @@ int main(int argc, const char *argv[]) {
 		if (event == NULL) {
 			ret = errno;
 			perror("unable to query event");
-			
+
 			goto done;
 		}
 
-		printf("%s %s%s\n", fstalk_s_event_type(event->type),
-				filename, event->target);
+		t_info = localtime(&event->time);
+		strftime(s_time, 64, "%d %b %Y - %I:%M:%S", t_info);
+
+		printf("[%s] %s %s%s\n", s_time,
+				fstalk_s_event_type(event->type), filename,
+				event->target);
 		free(event);
 	} while (1);
 
