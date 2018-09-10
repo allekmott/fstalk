@@ -2,8 +2,8 @@ CC=gcc
 CFLAGS=-Wall -std=c89 -MD
 
 EXE=fstalk
-DEPS=
-OBJS=main.o
+DEPS=fstalk.h inotify.h
+OBJS=fstalk.o inotify.o
 
 .PHONY: all
 all: $(EXE)
@@ -24,4 +24,5 @@ clean:
 	rm -f *.d
 	rm -f *~
 
+-include $(OBJS:.o=.d)
 
