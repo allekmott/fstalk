@@ -48,5 +48,12 @@ struct fstalk_watch {
 	void *ref;
 };
 
+/*
+ * Print string representation of an event to stdout
+ *
+ * @event	fstalk_event to be printed
+ */
+void fstalk_print_event(const struct fstalk_event *event);
+
 #endif /* __FSTALK_H__ */
 

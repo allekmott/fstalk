@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -std=c89 -MD
+CFLAGS=-Wall -Wextra -std=c89 -MD
 
 EXE=fstalk
 DEPS=fstalk.h inotify.h

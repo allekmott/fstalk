@@ -23,13 +23,29 @@ static const char *S_FSTALK_EVENT_TYPES[] = {
 };
 #define fstalk_s_event_type(type) (S_FSTALK_EVENT_TYPES[(type)])
 
+void fstalk_print_event(const struct fstalk_event *event) {
+	char s_time[64];
+	struct tm *t_info;
+
+	t_info = localtime(&event->time);
+	strftime(s_time, 64, "%d %b %Y - %I:%M:%S", t_info);
+
+	if (event->type == FSTALK_EVENT_MOVE) {
+		printf("[%s] %s %s -> %s\n", s_time,
+				fstalk_s_event_type(event->type),
+				event->target,
+				event->destination);
+	} else {
+		printf("[%s] %s %s\n", s_time,
+				fstalk_s_event_type(event->type),
+				event->target);
+	}
+}
+
 int main(int argc, const char *argv[]) {
 	struct fstalk_watch watch;
 	struct fstalk_event *event;
 	const char *filename;
-
-	struct tm *t_info;
-	char s_time[64];
 
 	int ret;
 
@@ -59,12 +75,7 @@ int main(int argc, const char *argv[]) {
 			goto done;
 		}
 
-		t_info = localtime(&event->time);
-		strftime(s_time, 64, "%d %b %Y - %I:%M:%S", t_info);
-
-		printf("[%s] %s %s%s\n", s_time,
-				fstalk_s_event_type(event->type), filename,
-				event->target);
+		fstalk_print_event(event);
 		free(event);
 	} while (1);
 
